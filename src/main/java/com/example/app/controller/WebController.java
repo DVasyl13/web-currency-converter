@@ -4,10 +4,7 @@ import com.example.app.service.ConverterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/converter")
@@ -20,14 +17,13 @@ public class WebController {
         return "converter";
     }
 
-    @PostMapping
+        @PostMapping
     public String getResult(@RequestParam("amount") float amount,
                           @RequestParam("fromCurrency") String fromCurrency,
                           @RequestParam("toCurrency") String toCurrency, Model model) {
         System.out.println(amount + " " + fromCurrency + " - " + toCurrency);
         var result = converterService.getConvertedAmount(amount, fromCurrency, toCurrency);
         model.addAttribute("result", result);
-        System.out.println(result);
         return "converter";
     }
 }
