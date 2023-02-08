@@ -25,7 +25,7 @@ public class WebController {
                           @RequestParam("fromCurrency") String fromCurrency,
                           @RequestParam("toCurrency") String toCurrency, Model model) {
         System.out.println(amount + " " + fromCurrency + " - " + toCurrency);
-        var result = converterService.convertCurrency(amount, fromCurrency, toCurrency);
+        var result = converterService.getConvertedAmount(amount, fromCurrency, toCurrency);
         model.addAttribute("result", result);
         System.out.println(result);
         return "converter";
