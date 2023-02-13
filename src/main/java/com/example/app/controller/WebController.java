@@ -13,17 +13,9 @@ public class WebController {
     private final ConverterService converterService;
 
     @GetMapping
-    public String getPage() {
-        return "converter";
-    }
-
-        @PostMapping
-    public String getResult(@RequestParam("amount") float amount,
-                          @RequestParam("fromCurrency") String fromCurrency,
-                          @RequestParam("toCurrency") String toCurrency, Model model) {
-        System.out.println(amount + " " + fromCurrency + " - " + toCurrency);
-        var result = converterService.getConvertedAmount(amount, fromCurrency, toCurrency);
-        model.addAttribute("result", result);
+    public String getPage(Model model) {
+        var rates = converterService.getRates();
+        model.addAttribute("rates", rates);
         return "converter";
     }
 }
