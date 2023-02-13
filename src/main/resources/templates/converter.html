@@ -58,7 +58,6 @@
             .then(response => response.json())
             .then(data => {
                 myMap = new Map(Object.entries(data));
-                console.log(myMap);
             })
             .catch(error => console.error(error));
     });
