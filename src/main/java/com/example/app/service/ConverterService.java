@@ -4,6 +4,7 @@ import com.example.app.pojo.CurrencyRate;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ConverterService {
@@ -27,11 +29,13 @@ public class ConverterService {
     @Cacheable("allRates")
     public Map<String, Double> getRates() {
         var response = callApiForAllCurrencies();
+        log.info("I got response!");
         return Objects.requireNonNull(response.getBody()).getRates();
     }
 
     private ResponseEntity<CurrencyRate> callApiForAllCurrencies() {
         var url = apiUrl + "/latest?base=USD&apikey="+apiKey;
+        log.info("I am calling API...");
         return restTemplate.getForEntity(url, CurrencyRate.class);
     }
 
