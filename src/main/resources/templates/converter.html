@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Currency Converter</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Currency Converter</title>
+    <link rel="stylesheet" type="text/css" href="/css/conv.css"/>
+    <script type="text/javascript" src="/js/conv.js"></script>
 </head>
 <body>
-<div class="container mt-5" style="background-color: #E8E8E8; border-radius: 10px; width: 500px; height: 440px">
+<div class="container mt-5" id="mainContainer">
     <h1>Currency Converter</h1>
     <div class="form-group">
         <label for="amount">Amount:</label>
@@ -30,48 +33,5 @@
         <label id="calculation"></label>
     </div>
 </div>
-<script>
-    let myMap = new Map();
-    let currencies = [];
-
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('http://localhost:8080/currency-rates')
-            .then(response => response.json())
-            .then(data => {
-                myMap = new Map(Object.entries(data));
-                currencies = Array.from( myMap.keys() );
-
-                let fromCurrency = document.getElementById("fromCurrency");
-                let toCurrency = document.getElementById("toCurrency");
-
-                for (let currenciesKey of currencies) {
-                    let el = document.createElement("option");
-                    el.textContent = currenciesKey;
-                    el.value = currenciesKey;
-                    fromCurrency.appendChild(el.cloneNode(true));
-                    toCurrency.appendChild(el);
-                }
-            })
-            .catch(error => console.error(error));
-    });
-
-    function calculateResult() {
-        var amount = document.getElementById("amount").value;
-        var fromCurrency = document.getElementById("fromCurrency").value;
-        var toCurrency = document.getElementById("toCurrency").value;
-        // 500
-        // 1 USD --- 36 UAH
-        // => 500 * (36/1)
-
-        // 1000
-        // 3.67 AED --- 90 AFN
-        // => 1000 * (90/3.67)
-        var coef = myMap.get(toCurrency)/myMap.get(fromCurrency);
-        var result = document.getElementById("calculation");
-
-        result.innerHTML = String(coef * amount);
-    }
-
-</script>
 </body>
 </html>
