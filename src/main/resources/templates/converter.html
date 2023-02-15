@@ -8,7 +8,7 @@
     <title>Currency Converter</title>
 </head>
 <body>
-<div class="container mt-5" style="background-color: #E8E8E8; border-radius: 10px; height: 450px">
+<div class="container mt-5" style="background-color: #E8E8E8; border-radius: 10px; width: 500px; height: 440px">
     <h1>Currency Converter</h1>
     <div class="form-group">
         <label for="amount">Amount:</label>
@@ -16,32 +16,12 @@
     </div>
     <div class="form-group">
         <label for="fromCurrency">From:</label>
-        <select class="form-control" id="fromCurrency" name="fromCurrency" onchange="calculateResult()">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-            <option value="JPY">JPY</option>
-            <option value="UAH">UAH</option>
-            <option value="PLN">PLN</option>
-            <option value="AUD">AUD</option>
-            <option value="CAD">CAD</option>
-            <option value="CHF">CHF</option>
-            <option value="CNY">CNY</option>
+        <select class="form-control" id="fromCurrency" onchange="calculateResult()">
         </select>
     </div>
     <div class="form-group">
         <label for="toCurrency">To:</label>
-        <select class="form-control" id="toCurrency" name="toCurrency" onchange="calculateResult()">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-            <option value="JPY">JPY</option>
-            <option value="UAH">UAH</option>
-            <option value="PLN">PLN</option>
-            <option value="AUD">AUD</option>
-            <option value="CAD">CAD</option>
-            <option value="CHF">CHF</option>
-            <option value="CNY">CNY</option>
+        <select class="form-control" id="toCurrency" onchange="calculateResult()">
         </select>
     </div>
     <br>
@@ -52,12 +32,25 @@
 </div>
 <script>
     let myMap = new Map();
+    let currencies = [];
 
     document.addEventListener("DOMContentLoaded", function() {
         fetch('http://localhost:8080/currency-rates')
             .then(response => response.json())
             .then(data => {
                 myMap = new Map(Object.entries(data));
+                currencies = Array.from( myMap.keys() );
+
+                let fromCurrency = document.getElementById("fromCurrency");
+                let toCurrency = document.getElementById("toCurrency");
+
+                for (let currenciesKey of currencies) {
+                    let el = document.createElement("option");
+                    el.textContent = currenciesKey;
+                    el.value = currenciesKey;
+                    fromCurrency.appendChild(el.cloneNode(true));
+                    toCurrency.appendChild(el);
+                }
             })
             .catch(error => console.error(error));
     });
